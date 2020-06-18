@@ -1,10 +1,5 @@
 'use strict';
 
-var FIRST_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-var SECOND_NAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
-var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56,159,117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
-var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
-var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 var WIZARDS_NUMBER = 4;
 
 var similarListElement = document.querySelector('.setup-similar-list');
@@ -12,17 +7,13 @@ var similarWizardTemplate = document.querySelector('#similar-wizard-template')
   .content
   .querySelector('.setup-similar-item');
 
-var getRandomDigit = function (maxValue) {
-  return Math.floor(Math.random() * maxValue);
-};
-
 var buildWizardUnit = function () {
-  var firstName = FIRST_NAMES[getRandomDigit(FIRST_NAMES.length)];
-  var secondName = SECOND_NAMES[getRandomDigit(SECOND_NAMES.length)];
+  var firstName = window.constants.FIRST_NAMES[window.helpers.randomNumber(window.constants.FIRST_NAMES.length)];
+  var secondName = window.constants.SECOND_NAMES[window.helpers.randomNumber(window.constants.SECOND_NAMES.length)];
   var customWizard = {
     name: (Math.round(Math.random())) ? firstName + ' ' + secondName : secondName + ' ' + firstName,
-    coatColor: COAT_COLORS[getRandomDigit(COAT_COLORS.length)],
-    eyesColor: EYES_COLORS[getRandomDigit(EYES_COLORS.length)]
+    coatColor: window.constants.COAT_COLORS[window.helpers.randomNumber(window.constants.COAT_COLORS.length)],
+    eyesColor: window.constants.EYES_COLORS[window.helpers.randomNumber(window.constants.EYES_COLORS.length)]
   };
   return customWizard;
 };
@@ -76,64 +67,37 @@ var onPopupEscPress = function (evt) {
 var openPopup = function () {
   setup.classList.remove('hidden');
   document.addEventListener('keydown', onPopupEscPress);
-};
-
-var closePopup = function () {
-  setup.classList.add('hidden');
-  document.removeEventListener('keydown', onPopupEscPress);
-};
-
-// Генерируем случайные цвета для плаща, глаз и фаербола
-var getRandomCoatColor = function () {
-  wizardCoat.style.fill = COAT_COLORS[getRandomDigit(COAT_COLORS.length)];
-  inputCoatColor.value = wizardCoat.style.fill;
-};
-
-var getRandomEyesColor = function () {
-  wizardEyes.style.fill = EYES_COLORS[getRandomDigit(EYES_COLORS.length)];
-  inputEyesColor.value = wizardEyes.style.fill;
-};
-
-var getRandomFireballColor = function () {
-  var fireballRandomColor = FIREBALL_COLORS[getRandomDigit(FIREBALL_COLORS.length)];
-  wizardFireball.style.background = fireballRandomColor;
-  inputFireballColor.value = fireballRandomColor;
-};
-
-// Объединяем в одну функцию три ивент-лисенера
-var setupWizardAppearance = function () {
   wizardCoat.addEventListener('click', getRandomCoatColor);
   wizardEyes.addEventListener('click', getRandomEyesColor);
   wizardFireball.addEventListener('click', getRandomFireballColor);
 };
 
-var removeWizardSetupListeners = function () {
+var closePopup = function () {
+  setup.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscPress);
   wizardCoat.removeEventListener('click', getRandomCoatColor);
   wizardEyes.removeEventListener('click', getRandomEyesColor);
   wizardFireball.removeEventListener('click', getRandomFireballColor);
 };
 
+// Генерируем случайные цвета для плаща, глаз и фаербола
+var getRandomCoatColor = window.helpers.colorize(wizardCoat, window.constants.COAT_COLORS, inputCoatColor);
+var getRandomEyesColor = window.helpers.colorize(wizardEyes, window.constants.EYES_COLORS, inputEyesColor);
+var getRandomFireballColor = window.helpers.colorize(wizardFireball, window.constants.FIREBALL_COLORS, inputFireballColor);
+
 setupOpen.addEventListener('click', function () {
   openPopup();
-  setupWizardAppearance();
 });
 
 setupOpen.addEventListener('keydown', function (evt) {
-  if (evt.key === 'Enter') {
-    openPopup();
-    setupWizardAppearance();
-  }
+  window.helpers.isEnterEvent(evt, openPopup);
 });
 
 setupClose.addEventListener('click', function () {
   closePopup();
-  removeWizardSetupListeners();
 });
 
 setupClose.addEventListener('keydown', function (evt) {
-  if (evt.key === 'Enter') {
-    closePopup();
-    removeWizardSetupListeners();
-  }
+  window.helpers.isEnterEvent(evt, closePopup);
 });
 
