@@ -11,10 +11,6 @@ window.helpers = (function () {
       }
       return maxElement;
     },
-    renderCloud: function (ctx, x, y, color) {
-      ctx.fillStyle = color;
-      ctx.fillRect(x, y, window.constants.CLOUD_WIDTH, window.constants.CLOUD_HEIGHT);
-    },
     randomNumber: function (maxValue) {
       return Math.floor(Math.random() * maxValue);
     },
