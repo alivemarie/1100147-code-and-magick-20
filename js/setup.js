@@ -48,6 +48,10 @@ document.querySelector('.setup-similar').classList.remove('hidden');
 
 var setupOpen = document.querySelector('.setup-open');
 var setup = document.querySelector('.setup');
+var setupCoords = {
+  left: setup.style.left,
+  top: setup.style.top
+};
 var setupClose = setup.querySelector('.setup-close');
 var setUserName = setup.querySelector('.setup-user-name');
 var wizardCoat = setup.querySelector('.wizard-coat');
@@ -55,7 +59,7 @@ var wizardEyes = setup.querySelector('.wizard-eyes');
 var wizardFireball = setup.querySelector('.setup-fireball-wrap');
 var inputFireballColor = setup.querySelector('input[name=\'fireball-color\']');
 var inputCoatColor = setup.querySelector('input[name=\'coat-color\']');
-var inputEyesColor = setup.querySelector('input[name=\'coat-color\']');
+var inputEyesColor = setup.querySelector('input[name=\'eyes-color\']');
 
 var onPopupEscPress = function (evt) {
   if ((evt.key === 'Escape') && (document.activeElement !== setUserName)) {
@@ -78,6 +82,8 @@ var closePopup = function () {
   wizardCoat.removeEventListener('click', getRandomCoatColor);
   wizardEyes.removeEventListener('click', getRandomEyesColor);
   wizardFireball.removeEventListener('click', getRandomFireballColor);
+  setup.style.top = setupCoords.top;
+  setup.style.left = setupCoords.left;
 };
 
 // Генерируем случайные цвета для плаща, глаз и фаербола
