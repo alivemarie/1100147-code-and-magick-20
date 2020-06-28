@@ -60,5 +60,51 @@
   setupClose.addEventListener('keydown', function (evt) {
     window.helpers.isEnterEvent(evt, closePopup);
   });
-})();
 
+  // Похожие волшебники
+  var similarListElement = document.querySelector('.setup-similar-list');
+  var similarWizardTemplate = document.querySelector('#similar-wizard-template')
+    .content
+    .querySelector('.setup-similar-item');
+
+  var renderWizard = function (unit) {
+    var wizardElement = similarWizardTemplate.cloneNode(true);
+    wizardElement.querySelector('.setup-similar-label').textContent = unit.name;
+    wizardElement.querySelector('.wizard-coat').style.fill = unit.colorCoat;
+    wizardElement.querySelector('.wizard-eyes').style.fill = unit.colorEyes;
+    return wizardElement;
+  };
+
+  // Получение данных с сервера
+  var onDownload = function (data) {
+    var fragment = document.createDocumentFragment();
+    for (var i = 0; i < window.constants.WIZARD_NUMBER; i++) {
+      fragment.appendChild(renderWizard(data[i]));
+    }
+    similarListElement.appendChild(fragment);
+    document.querySelector('.setup-similar').classList.remove('hidden');
+  };
+  // Отправка данных на сервер
+  var onSuccess = function () {
+    setup.classList.add('hidden');
+  };
+  var onError = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  var form = setup.querySelector('.setup-wizard-form');
+  form.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(form), onSuccess, onError);
+    evt.preventDefault();
+  });
+
+  window.backend.load(onDownload, onError);
+})();
