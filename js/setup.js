@@ -79,7 +79,6 @@
   var onDownload = function (data) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < window.constants.WIZARD_NUMBER; i++) {
-      console.log(data[i]);
       fragment.appendChild(renderWizard(data[i]));
     }
     similarListElement.appendChild(fragment);
@@ -109,4 +108,3 @@
 
   window.backend.load(onDownload, onError);
 })();
-
