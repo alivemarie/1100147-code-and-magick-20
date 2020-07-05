@@ -84,7 +84,6 @@
   };
 
   window.updateWizards = function () {
-    console.log(2);
     window.render(wizards.sort(function (left, right) {
       var rankDiff = getRank(right) - getRank(left);
       if (rankDiff === 0) {
