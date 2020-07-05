@@ -28,6 +28,7 @@ window.helpers = (function () {
           element.style.fill = color;
         }
         elemInput.value = color;
+        window.debounce(window.updateWizards);
       });
     }
   };
