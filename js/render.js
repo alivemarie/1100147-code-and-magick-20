@@ -13,6 +13,7 @@
     wizardElement.querySelector('.wizard-eyes').style.fill = unit.colorEyes;
     return wizardElement;
   };
+
   window.render = function (data) {
     var fragment = document.createDocumentFragment();
     var takeNumber = data.length > window.constants.WIZARD_NUMBER ? window.constants.WIZARD_NUMBER : data.length;

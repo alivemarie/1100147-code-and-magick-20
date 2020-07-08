@@ -73,6 +73,7 @@
     }
     return rank;
   };
+
   var namesComparator = function (left, right) {
     if (left > right) {
       return 1;
@@ -83,19 +84,10 @@
     }
   };
 
-  window.updateWizards = function () {
-    window.render(wizards.sort(function (left, right) {
-      var rankDiff = getRank(right) - getRank(left);
-      if (rankDiff === 0) {
-        rankDiff = namesComparator(left.name, right.name);
-      }
-      return rankDiff;
-    }));
-  };
-
   var onSubmit = function () {
     setup.classList.add('hidden');
   };
+
   var onError = function (errorMessage) {
     var node = document.createElement('div');
     node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
@@ -103,7 +95,6 @@
     node.style.left = 0;
     node.style.right = 0;
     node.style.fontSize = '30px';
-
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
   };
@@ -113,9 +104,23 @@
     window.backend.save(new FormData(form), onSubmit, onError);
     evt.preventDefault();
   });
+
   var onDownload = function (data) {
     wizards = data;
-    window.updateWizards();
+    window.setup.updateWizards();
   };
+
   window.backend.load(onDownload, onError);
+
+  window.setup = {
+    updateWizards: function () {
+      window.render(wizards.sort(function (left, right) {
+        var rankDiff = getRank(right) - getRank(left);
+        if (rankDiff === 0) {
+          rankDiff = namesComparator(left.name, right.name);
+        }
+        return rankDiff;
+      }));
+    }
+  };
 })();
